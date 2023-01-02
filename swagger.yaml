@@ -1,0 +1,212 @@
+---
+openapi: 3.0.0
+info:
+  title: home-iot-api
+  description: The API for the EatBacon IOT project
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/IVANPETRENKOEXCEEDTE/adasa/1.0.0
+  description: SwaggerHub API Auto Mocking
+paths:
+  /car-rent:
+    get:
+      tags:
+      - Car-rent
+      description: returns the car booking history
+      responses:
+        "200":
+          description: car booking history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookingInfo'
+  /car-rent/:
+    post:
+      tags:
+      - Car-rent
+      description: book a car
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingDetails'
+      responses:
+        "200":
+          description: The car is booked
+  /car-rent/report/{carid}/{month}:
+    get:
+      tags:
+      - Car-rent
+      description: receiving a report on vehicles for the selected month
+      parameters:
+      - name: carid
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: uuid
+      - name: month
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: report on cars for the selected month
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportDetails'
+  /car-rent/rental-price/{rentalStart}/{endLease}:
+    get:
+      tags:
+      - Car-rent
+      description: receiving a report on vehicles for the selected month
+      parameters:
+      - name: rentalStart
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: date-time
+      - name: endLease
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: report on cars for the selected month
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+                example: 1000
+  /car-rent/car-status/{startOfLease}/{endLease}:
+    get:
+      tags:
+      - Car-rent
+      description: receiving a report on vehicles for the selected month
+      parameters:
+      - name: startOfLease
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: date-time
+      - name: endLease
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: report on cars for the selected month
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/stateCarNumber'
+  /import-export/export-file:
+    get:
+      tags:
+      - Import-export
+      description: receiving a report on vehicles for the selected month
+      responses:
+        "200":
+          description: report on cars for the selected month
+          content:
+            application/json:
+              schema:
+                type: string
+                format: url
+                example: https://*******.*****.yandexcloud.net/*****/5deda730-242b-439a-bf83-eac13c51827d.csv
+components:
+  schemas:
+    BookingInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        carid:
+          type: string
+          format: uuid
+        userid:
+          type: string
+          format: uuid
+        startOfLease:
+          type: string
+          format: date-time
+        endOfLease:
+          type: string
+          format: date-time
+        rentperiod:
+          type: integer
+          format: int32
+    BookingDetails:
+      type: object
+      properties:
+        carId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        startOfLease:
+          type: string
+          format: date-time
+        endOfLease:
+          type: string
+          format: date-time
+    ReportDetails:
+      type: object
+      properties:
+        statenumber:
+          type: integer
+          format: int32
+          example: 123
+        percentageCarLoadPerMonth:
+          type: integer
+          format: int32
+          example: 15
+    dataCalculatingAmount:
+      type: object
+      properties:
+        startOfLease:
+          type: string
+          format: date-time
+        endOfLease:
+          type: string
+          format: date-time
+    stateCarNumber:
+      type: object
+      properties:
+        statenumber:
+          type: integer
+          format: int32
+          example: 123
